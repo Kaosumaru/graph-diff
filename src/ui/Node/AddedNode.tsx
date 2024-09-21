@@ -4,6 +4,7 @@ import { State } from "../../interface/NodeInterface";
 
 const styles = css<{ state?: State }>`
   background: #2CF6B3;
+  border-color: #4DBC56;
 `;
 
 export function AddedNode(props: any) {

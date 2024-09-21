@@ -16,7 +16,7 @@ import { RemovedNode } from "./ui/Node/RemovedNode";
 import { AddedConnectionComponent } from "./ui/Connection/AddedConnection";
 import { RemovedConnectionComponent } from "./ui/Connection/RemovedConnection";
 import { DiffGraph } from "./logic/DiffGraph";
-
+import { ReadonlyPlugin } from "rete-readonly-plugin";
 
 
 export async function createEditor(container: HTMLElement) {
@@ -24,6 +24,7 @@ export async function createEditor(container: HTMLElement) {
   const area = new AreaPlugin<Schemes, AreaExtra>(container);
   const connection = new ConnectionPlugin<Schemes, AreaExtra>();
   const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
+  const readonly = new ReadonlyPlugin<Schemes>();
 
   AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
     accumulating: AreaExtensions.accumulateOnCtrl(),
@@ -59,7 +60,10 @@ export async function createEditor(container: HTMLElement) {
 
   connection.addPreset(ConnectionPresets.classic.setup());
 
+  editor.use(readonly.root);
   editor.use(area);
+
+  area.use(readonly.area);
   area.use(connection);
   area.use(render);
 
@@ -74,6 +78,8 @@ export async function createEditor(container: HTMLElement) {
   setTimeout(() => {
     // wait until nodes rendered because they dont have predefined width and height
     AreaExtensions.zoomAt(area, editor.getNodes());
+    readonly.enable();
+
   }, 10);
   return {
     destroy: () => area.destroy(),

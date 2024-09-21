@@ -4,6 +4,7 @@ import { State } from "../../interface/NodeInterface";
 
 const styles = css<{ state?: State }>`
   background: #BF211E;
+  border-color: #BA554C;
 `;
 
 export function RemovedNode(props: any) {
