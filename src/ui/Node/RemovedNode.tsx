@@ -3,8 +3,8 @@ import { css } from "styled-components";
 import { State } from "../../interface/NodeInterface";
 
 const styles = css<{ state?: State }>`
-  background: #BF211E;
-  border-color: #BA554C;
+  background: #BF211E45;
+  border-color: #BA554CCC;
 `;
 
 export function RemovedNode(props: any) {

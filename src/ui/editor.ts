@@ -15,6 +15,7 @@ import { RemovedNode } from "./Node/RemovedNode";
 import { AddedConnectionComponent } from "./Connection/AddedConnection";
 import { RemovedConnectionComponent } from "./Connection/RemovedConnection";
 import { ReadonlyPlugin } from "rete-readonly-plugin";
+import { addCustomBackground } from "./Background/Background";
 
 
 export function createEditor(graph: Graph): (container: HTMLElement) => Promise<{ destroy():void}> {
@@ -68,7 +69,8 @@ export function createEditor(graph: Graph): (container: HTMLElement) => Promise<
     area.use(render);
   
     AreaExtensions.simpleNodesOrder(area);
-  
+    addCustomBackground(area);
+    
     FillEditor(graph, editor, area);
   
     setTimeout(() => {

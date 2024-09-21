@@ -3,8 +3,8 @@ import { css } from "styled-components";
 import { State } from "../../interface/NodeInterface";
 
 const styles = css<{ state?: State }>`
-  background: #2CF6B3;
-  border-color: #4DBC56;
+  background: #2CF6B3CC;
+  border-color: #4DBC56CC;
 `;
 
 export function AddedNode(props: any) {
