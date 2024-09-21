@@ -6,14 +6,14 @@ import {
   Presets as ConnectionPresets,
 } from "rete-connection-plugin";
 import { ReactPlugin, Presets } from "rete-react-plugin";
-import { AreaExtra, Schemes } from "./interface/ReteTypes";
-import { FillEditor } from "./interface/FillEditor";
-import { StandardNode } from "./ui/Node/StandardNode";
-import { Graph, State } from "./interface/NodeInterface";
-import { AddedNode } from "./ui/Node/AddedNode";
-import { RemovedNode } from "./ui/Node/RemovedNode";
-import { AddedConnectionComponent } from "./ui/Connection/AddedConnection";
-import { RemovedConnectionComponent } from "./ui/Connection/RemovedConnection";
+import { AreaExtra, Schemes } from "../interface/ReteTypes";
+import { FillEditor } from "../interface/FillEditor";
+import { StandardNode } from "./Node/StandardNode";
+import { Graph, State } from "../interface/NodeInterface";
+import { AddedNode } from "./Node/AddedNode";
+import { RemovedNode } from "./Node/RemovedNode";
+import { AddedConnectionComponent } from "./Connection/AddedConnection";
+import { RemovedConnectionComponent } from "./Connection/RemovedConnection";
 import { ReadonlyPlugin } from "rete-readonly-plugin";
 
 
