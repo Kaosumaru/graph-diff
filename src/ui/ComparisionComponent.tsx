@@ -54,7 +54,9 @@ const graph1 = SampleGraph();
 const graph2 = SampleGraph2();
 
 const diff = DiffGraph(graph1, graph2);
-const graphView = createEditor(diff);
+const graphView = createEditor(diff, (node) => {
+  
+});
 
 
 export function ComparisionComponent() {

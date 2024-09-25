@@ -6,7 +6,7 @@ import {
   Presets as ConnectionPresets,
 } from "rete-connection-plugin";
 import { ReactPlugin, Presets } from "rete-react-plugin";
-import { AreaExtra, Schemes } from "../interface/ReteTypes";
+import { AreaExtra, NodeView, Schemes } from "../interface/ReteTypes";
 import { FillEditor } from "../interface/FillEditor";
 import { StandardNode } from "./Node/StandardNode";
 import { Graph, State } from "../interface/NodeInterface";
@@ -17,8 +17,8 @@ import { RemovedConnectionComponent } from "./Connection/RemovedConnection";
 import { ReadonlyPlugin } from "rete-readonly-plugin";
 import { addCustomBackground } from "./Background/Background";
 
-
-export function createEditor(graph: Graph): (container: HTMLElement) => Promise<{ destroy():void}> {
+type NodeCallback = (node?: NodeView) => void;
+export function createEditor(graph: Graph, onNodePicked: NodeCallback): (container: HTMLElement) => Promise<{ destroy():void}> {
 
   return async (container: HTMLElement) => {
     const editor = new NodeEditor<Schemes>();
@@ -27,10 +27,18 @@ export function createEditor(graph: Graph): (container: HTMLElement) => Promise<
     const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
     const readonly = new ReadonlyPlugin<Schemes>();
   
-    AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
+    const selectable = AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
       accumulating: AreaExtensions.accumulateOnCtrl(),
     });
-  
+
+    area.addPipe(context => {
+      if (context.type === 'nodepicked') {
+        const node = editor.getNode(context.data.id);
+        onNodePicked(node);
+      }
+      return context
+    });
+
     render.addPreset(
       Presets.classic.setup({
         customize: {
@@ -63,6 +71,8 @@ export function createEditor(graph: Graph): (container: HTMLElement) => Promise<
   
     editor.use(readonly.root);
     editor.use(area);
+
+
   
     area.use(readonly.area);
     area.use(connection);

@@ -1,7 +1,7 @@
 import { Position } from "rete-react-plugin";
 import { Node, Graph, State } from "./NodeInterface";
 
-function SampleOutputNode(id: string, position: Position, state?: State): Node {
+function SampleOutputNode(id: string, position: Position, jsonData?: any): Node {
     return {
         identifier: id,
         label: "Output Node",
@@ -14,11 +14,11 @@ function SampleOutputNode(id: string, position: Position, state?: State): Node {
             "c": "c",
         },
 
-        state: state,
+        jsonData: jsonData,
     }
 }
 
-function SampleInputNode(id: string, position: Position, state?: State): Node {
+function SampleInputNode(id: string, position: Position, jsonData?: any): Node {
     return {
         identifier: id,
         label: "Input Node",
@@ -31,11 +31,11 @@ function SampleInputNode(id: string, position: Position, state?: State): Node {
         },
         outputs:{},
 
-        state: state,
+        jsonData: jsonData,
     }
 }
 
-function SampleIntermediateNode(id: string, position: Position, state?: State): Node {
+function SampleIntermediateNode(id: string, position: Position, jsonData?: any): Node {
     return {
         identifier: id,
         label: "Intermediate Node",
@@ -50,14 +50,14 @@ function SampleIntermediateNode(id: string, position: Position, state?: State): 
             "out2": "out2",
         },
 
-        state: state,
+        jsonData: jsonData,
     }
 }
 
 export function SampleGraph(): Graph {
     return {
         nodes:[
-            SampleOutputNode("out1", {x: 0, y: 0}),
+            SampleOutputNode("out1", {x: 0, y: 0}, { text: "foo" }),
             SampleOutputNode("out2", {x: 0, y: 200}),
             SampleOutputNode("out3", {x: 0, y: 400}),
 
@@ -105,7 +105,7 @@ export function SampleGraph(): Graph {
 export function SampleGraph2(): Graph {
     return {
         nodes:[
-            SampleOutputNode("out1", {x: 0, y: 0}),
+            SampleOutputNode("out1", {x: 0, y: 0}, { text: "bar" }),
             SampleOutputNode("out2", {x: 0, y: 200}),
 
             SampleIntermediateNode("x1", {x: 400, y: -100}),

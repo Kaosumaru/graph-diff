@@ -19,6 +19,7 @@ export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area
 async function AddNode(nodeData: Node, nodes: Map<string, NodeView>, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>) {
     const node = new NodeView(nodeData.label);
     
+    node.jsonData = nodeData.jsonData;
     if (nodeData.state)
         node.state = nodeData.state;
 

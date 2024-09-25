@@ -24,6 +24,7 @@ export interface Node {
     inputs: Sockets;
     outputs: Sockets;
 
+    jsonData?: any;
     state?: State;
 }
 
@@ -53,6 +54,7 @@ export function CloneNode(node: Node): Node {
         inputs:  node.inputs,
         outputs:  node.outputs,
 
+        jsonData: node.jsonData,
         state: node.state
     }
 }
