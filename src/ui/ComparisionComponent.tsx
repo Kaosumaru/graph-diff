@@ -1,11 +1,10 @@
 import { useRete } from 'rete-react-plugin';
-import { SampleGraph, SampleGraph2 } from '../interface/SampleData';
-import { DiffGraph } from '../logic/DiffGraph';
 import { createEditor } from './editor';
 import ReactJsonViewCompare from 'react-json-view-compare';
 import styled from 'styled-components';
 import { Area } from './Area';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { Graph } from '../interface/NodeInterface';
 
 const Layout = styled.div`
   display: grid;
@@ -51,24 +50,22 @@ const newData = {
   ]
 };
 
-const graph1 = SampleGraph();
-const graph2 = SampleGraph2();
 
-const diff = DiffGraph(graph1, graph2);
-
-
-
-export function ComparisionComponent() {
+export function ComparisionComponent(props: {diffGraph: Graph}) {
+    const [title, setTitle] = useState("Title")
 
     const create = useCallback((container: HTMLElement) => {
-        return createEditor(container, diff, (node) => {
+        return createEditor(container, props.diffGraph, (node) => {
+          if (node)
+            setTitle(node.label);
       });
-    }, [createEditor]);
+    }, [createEditor, props.diffGraph]);
     const [ref] = useRete(create)
 
     return (
     <Layout>
         <Result>
+            <div style={{ color: 'black' }}>{title}</div>
             <ReactJsonViewCompare oldData={oldData} newData={newData} />
         </Result>
         <Canvas>
