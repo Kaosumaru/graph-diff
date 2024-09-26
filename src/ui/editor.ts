@@ -18,81 +18,79 @@ import { ReadonlyPlugin } from "rete-readonly-plugin";
 import { addCustomBackground } from "./Background/Background";
 
 type NodeCallback = (node?: NodeView) => void;
-export function createEditor(graph: Graph, onNodePicked: NodeCallback): (container: HTMLElement) => Promise<{ destroy():void}> {
+export async function createEditor(container: HTMLElement, graph: Graph, onNodePicked: NodeCallback): Promise<{ destroy():void}> {
 
-  return async (container: HTMLElement) => {
-    const editor = new NodeEditor<Schemes>();
-    const area = new AreaPlugin<Schemes, AreaExtra>(container);
-    const connection = new ConnectionPlugin<Schemes, AreaExtra>();
-    const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
-    const readonly = new ReadonlyPlugin<Schemes>();
-  
-    const selectable = AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
-      accumulating: AreaExtensions.accumulateOnCtrl(),
-    });
+  const editor = new NodeEditor<Schemes>();
+  const area = new AreaPlugin<Schemes, AreaExtra>(container);
+  const connection = new ConnectionPlugin<Schemes, AreaExtra>();
+  const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
+  const readonly = new ReadonlyPlugin<Schemes>();
 
-    area.addPipe(context => {
-      if (context.type === 'nodepicked') {
-        const node = editor.getNode(context.data.id);
-        onNodePicked(node);
-      }
-      return context
-    });
+  AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
+    accumulating: AreaExtensions.accumulateOnCtrl(),
+  });
 
-    render.addPreset(
-      Presets.classic.setup({
-        customize: {
-          node(context) {
-            switch(context.payload.state) {
-              case State.Added:
-                return AddedNode;
-              case State.Removed:
-                return RemovedNode;
-            }
-            return StandardNode;
-          },
-          socket(context) {
-            return Presets.classic.Socket;
-          },
-          connection(context) {
-            switch(context.payload.state) {
-              case State.Added:
-                return AddedConnectionComponent;
-              case State.Removed:
-                return RemovedConnectionComponent;
-            }
-            return Presets.classic.Connection;
+  area.addPipe(context => {
+    if (context.type === 'nodepicked') {
+      const node = editor.getNode(context.data.id);
+      onNodePicked(node);
+    }
+    return context
+  });
+
+  render.addPreset(
+    Presets.classic.setup({
+      customize: {
+        node(context) {
+          switch(context.payload.state) {
+            case State.Added:
+              return AddedNode;
+            case State.Removed:
+              return RemovedNode;
           }
+          return StandardNode;
+        },
+        socket(context) {
+          return Presets.classic.Socket;
+        },
+        connection(context) {
+          switch(context.payload.state) {
+            case State.Added:
+              return AddedConnectionComponent;
+            case State.Removed:
+              return RemovedConnectionComponent;
+          }
+          return Presets.classic.Connection;
         }
-      })
-    );
-  
-    connection.addPreset(ConnectionPresets.classic.setup());
-  
-    editor.use(readonly.root);
-    editor.use(area);
+      }
+    })
+  );
+
+  connection.addPreset(ConnectionPresets.classic.setup());
+
+  editor.use(readonly.root);
+  editor.use(area);
 
 
+
+  area.use(readonly.area);
+  area.use(connection);
+  area.use(render);
+
+  AreaExtensions.simpleNodesOrder(area);
+  addCustomBackground(area);
   
-    area.use(readonly.area);
-    area.use(connection);
-    area.use(render);
-  
-    AreaExtensions.simpleNodesOrder(area);
-    addCustomBackground(area);
-    
-    FillEditor(graph, editor, area);
-  
-    setTimeout(() => {
-      // wait until nodes rendered because they dont have predefined width and height
-      AreaExtensions.zoomAt(area, editor.getNodes());
-      readonly.enable();
-  
-    }, 10);
-    return {
-      destroy: () => area.destroy(),
-    };
-  }
+  await FillEditor(graph, editor, area);
+
+  setTimeout(() => {
+    // wait until nodes rendered because they dont have predefined width and height
+    AreaExtensions.zoomAt(area, editor.getNodes());
+    readonly.enable();
+
+  }, 10);
+  return {
+    destroy: () => area.destroy(),
+  };
 
 }
 

@@ -5,6 +5,7 @@ import { createEditor } from './editor';
 import ReactJsonViewCompare from 'react-json-view-compare';
 import styled from 'styled-components';
 import { Area } from './Area';
+import { useCallback } from 'react';
 
 const Layout = styled.div`
   display: grid;
@@ -54,14 +55,17 @@ const graph1 = SampleGraph();
 const graph2 = SampleGraph2();
 
 const diff = DiffGraph(graph1, graph2);
-const graphView = createEditor(diff, (node) => {
-  
-});
+
 
 
 export function ComparisionComponent() {
-    const [ref] = useRete(graphView);
-  
+
+    const create = useCallback((container: HTMLElement) => {
+        return createEditor(container, diff, (node) => {
+      });
+    }, [createEditor]);
+    const [ref] = useRete(create)
+
     return (
     <Layout>
         <Result>
