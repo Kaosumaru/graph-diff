@@ -38,7 +38,11 @@ export function ComparisionComponent(props: {diffGraph: Graph}) {
 
   const create = useCallback((container: HTMLElement) => {
       return createEditor(container, props.diffGraph, (node) => {
-        if (!node) return;
+        if (!node) {
+          setOldJson({});
+          setNewJson({});
+          return;
+        }
         setTitle(node.label);
         if (node.state == State.Changed) {
           setOldJson(node.jsonData.old);
