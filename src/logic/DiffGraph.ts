@@ -1,4 +1,5 @@
 import { CloneNode, Graph, Node, State, Connection } from "../interface/NodeInterface";
+import deepEqual from 'deep-equal';
 
 export function DiffGraph(graph1: Graph, graph2: Graph): Graph {
     return {
@@ -88,7 +89,15 @@ function DiffNode(node1: Node | undefined, node2: Node | undefined): Node {
         node.state = State.Added;
     } else if (node1 && node2) {
         node = CloneNode(node2);
-        node.state = State.NonModified;
+
+        const oldJson = node1.jsonData ?? {};
+        const newJson = node2.jsonData ?? {};
+        const isDataEqual = deepEqual(oldJson, newJson);
+
+        node.state = isDataEqual ? State.NonModified : State.Changed;
+
+        if (!isDataEqual)
+            node.jsonData = { old: oldJson, new: newJson };
     } else {
         throw Error("Wrong parameters");
     }

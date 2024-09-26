@@ -16,6 +16,7 @@ import { AddedConnectionComponent } from "./Connection/AddedConnection";
 import { RemovedConnectionComponent } from "./Connection/RemovedConnection";
 import { ReadonlyPlugin } from "rete-readonly-plugin";
 import { addCustomBackground } from "./Background/Background";
+import { ModifiedNode } from "./Node/ModifiedNode";
 
 type NodeCallback = (node?: NodeView) => void;
 export async function createEditor(container: HTMLElement, graph: Graph, onNodePicked: NodeCallback): Promise<{ destroy():void}> {
@@ -47,6 +48,8 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
               return AddedNode;
             case State.Removed:
               return RemovedNode;
+            case State.Changed:
+              return ModifiedNode;
           }
           return StandardNode;
         },

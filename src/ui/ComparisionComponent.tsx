@@ -4,7 +4,7 @@ import ReactJsonViewCompare from 'react-json-view-compare';
 import styled from 'styled-components';
 import { Area } from './Area';
 import { useCallback, useState } from 'react';
-import { Graph } from '../interface/NodeInterface';
+import { Graph, State } from '../interface/NodeInterface';
 
 const Layout = styled.div`
   display: grid;
@@ -30,47 +30,37 @@ const Canvas = styled(Area)`
   position: relative;
 `
 
-const oldData = {
-  name: 'super',
-  age: 18,
-  task: [
-    { name: 'eat', time: '09:00' },
-    { name: 'work', time: '10:00' },
-    { name: 'sleep', time: '22:00' }
-  ]
-};
-const newData = {
-  name: 'coolapt',
-  age: 20,
-  task: [
-    { name: 'eat', time: '09:00' },
-    { name: 'work', time: '10:00' },
-    { name: 'sleep', time: '23:00' },
-    { name: 'running', time: '08:00' }
-  ]
-};
-
-
 export function ComparisionComponent(props: {diffGraph: Graph}) {
-    const [title, setTitle] = useState("Title")
+  const [oldJson, setOldJson] = useState({});
+  const [newJson, setNewJson] = useState({});
 
-    const create = useCallback((container: HTMLElement) => {
-        return createEditor(container, props.diffGraph, (node) => {
-          if (node)
-            setTitle(node.label);
-      });
-    }, [createEditor, props.diffGraph]);
-    const [ref] = useRete(create)
+  const [title, setTitle] = useState("Title")
 
-    return (
-    <Layout>
-        <Result>
-            <div style={{ color: 'black' }}>{title}</div>
-            <ReactJsonViewCompare oldData={oldData} newData={newData} />
-        </Result>
-        <Canvas>
-            <div ref={ref} style={{ height: "100vh", width: "100vw" }}></div>
-        </Canvas>
-    </Layout>
-    );
+  const create = useCallback((container: HTMLElement) => {
+      return createEditor(container, props.diffGraph, (node) => {
+        if (!node) return;
+        setTitle(node.label);
+        if (node.state == State.Changed) {
+          setOldJson(node.jsonData.old);
+          setNewJson(node.jsonData.new);
+        } else {
+          setOldJson(node.jsonData);
+          setNewJson(node.jsonData);
+        }
+
+    });
+  }, [createEditor, props.diffGraph]);
+  const [ref] = useRete(create)
+
+  return (
+  <Layout>
+      <Result>
+          <div style={{ color: 'black' }}>{title}</div>
+          <ReactJsonViewCompare oldData={oldJson} newData={newJson} />
+      </Result>
+      <Canvas>
+          <div ref={ref} style={{ height: "100vh", width: "100vw" }}></div>
+      </Canvas>
+  </Layout>
+  );
 }
