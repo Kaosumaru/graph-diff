@@ -5,6 +5,8 @@ import { State } from "./NodeInterface";
 export class NodeView extends ClassicPreset.Node {
     state = State.NonModified;
     jsonData?: any;
+    width = 180;
+    height = 140;
 }
   
 export class ConnectionView<N extends NodeView> extends ClassicPreset.Connection<N, N> {

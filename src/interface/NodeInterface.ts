@@ -43,9 +43,16 @@ export interface Connection {
     state?: State;
 }
 
+export interface Comment {
+    identifier: string;
+    label: string;
+    ids: string[];
+}
+
 export interface Graph {
     nodes: Node[];
     connections: Connection[];
+    comments?: Comment[];
 }
 
 export function CloneNode(node: Node): Node {

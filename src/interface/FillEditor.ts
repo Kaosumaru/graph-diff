@@ -1,19 +1,25 @@
 
 import { NodeEditor, ClassicPreset } from "rete";
-import { Connection, Graph, Node } from "./NodeInterface";
+import { Comment, Connection, Graph, Node } from "./NodeInterface";
 import { AreaExtra, NodeView, ConnectionView, Schemes } from "./ReteTypes";
 import { AreaPlugin } from "rete-area-plugin";
+import { CommentPlugin, CommentExtensions } from "rete-comment-plugin";
 
 const socket = new ClassicPreset.Socket("socket");
 
 
-export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>) {
+export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>, comments: CommentPlugin<Schemes, AreaExtra>) {
     const nodes = new Map<string, NodeView>();
     for(const node of graph.nodes) 
         await AddNode(node, nodes, editor, area);
 
     for(const connection of graph.connections) 
         await AddConnection(connection, nodes, editor);
+
+    if (graph.comments) {
+        for(const comment of graph.comments) 
+            AddedComment(comment, nodes, comments);
+    }
 }
 
 async function AddNode(nodeData: Node, nodes: Map<string, NodeView>, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>) {
@@ -55,4 +61,8 @@ async function AddConnection(connection: Connection, nodes: Map<string, NodeView
         connectionView.state = connection.state;
 
     await editor.addConnection(connectionView);
+}
+
+async function AddedComment(comment: Comment, nodes: Map<string, NodeView>, comments: CommentPlugin<Schemes, AreaExtra>) {
+    comments.addFrame(comment.label, comment.ids.map(id => nodes.get(id)?.id ?? `NotFound-${id}`));
 }

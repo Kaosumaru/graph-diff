@@ -17,6 +17,7 @@ import { RemovedConnectionComponent } from "./Connection/RemovedConnection";
 import { ReadonlyPlugin } from "rete-readonly-plugin";
 import { addCustomBackground } from "./Background/Background";
 import { ModifiedNode } from "./Node/ModifiedNode";
+import { CommentPlugin, CommentExtensions } from "rete-comment-plugin";
 
 type NodeCallback = (node?: NodeView) => void;
 export async function createEditor(container: HTMLElement, graph: Graph, onNodePicked: NodeCallback): Promise<{ destroy():void}> {
@@ -26,6 +27,7 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   const connection = new ConnectionPlugin<Schemes, AreaExtra>();
   const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
   const readonly = new ReadonlyPlugin<Schemes>();
+  const comment = new CommentPlugin<Schemes, AreaExtra>();
 
   AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
     accumulating: AreaExtensions.accumulateOnCtrl(),
@@ -73,7 +75,7 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
 
   editor.use(readonly.root);
   editor.use(area);
-
+  area.use(comment);
 
 
   area.use(readonly.area);
@@ -81,9 +83,11 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   area.use(render);
 
   AreaExtensions.simpleNodesOrder(area);
+
+
   addCustomBackground(area);
   
-  await FillEditor(graph, editor, area);
+  await FillEditor(graph, editor, area, comment);
 
   setTimeout(() => {
     // wait until nodes rendered because they dont have predefined width and height

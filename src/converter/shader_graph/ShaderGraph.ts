@@ -1,4 +1,4 @@
-import { Edge, GraphData, GraphEntry, Id, Node, Slot, SlotRef } from "./interface";
+import { Context, Edge, GraphData, GraphEntry, Id, Node, Slot, SlotRef } from "./interface";
 import * as model from "../../interface/NodeInterface";
 
 export function convertShaderGraph(graph: string): model.Graph {
@@ -51,9 +51,16 @@ export function convertShaderGraph(graph: string): model.Graph {
         }
     }
 
+    if (!graphData)
+        throw new Error("Graph data not found");
+
     return {
         connections: getEdges(graphData),
-        nodes: nodes.map((node) => nodeToGraphNode(node))
+        nodes: nodes.map((node) => nodeToGraphNode(node)),
+        comments: [
+            contextToComment("Fragment", graphData.m_FragmentContext),
+            contextToComment("Vertex", graphData.m_VertexContext),
+        ]
     }
 }
 
@@ -74,4 +81,12 @@ function toSocketRef(ref: SlotRef): model.SocketReference {
 
 function convertToSocket(slot: Slot): model.Socket {
     return model.socket(`${slot.m_Id}`, slot.m_DisplayName);
+}
+
+function contextToComment(label: string, context: Context): model.Comment {
+    return {
+        identifier: "internal: " + label,
+        label: label,
+        ids: context.m_Blocks.map(block => block.m_Id)
+    }
 }
