@@ -88,7 +88,7 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   setTimeout(() => {
     // wait until nodes rendered because they dont have predefined width and height
     AreaExtensions.zoomAt(area, editor.getNodes());
-    readonly.enable();
+    //readonly.enable();
 
   }, 10);
   return {

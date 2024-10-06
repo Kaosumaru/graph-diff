@@ -12,17 +12,20 @@ export interface Socket {
     label: string;
 }
 
-export type Sockets = {
-    [id: string]: string;
-};
+export function socket(id: string, label: string) {
+    return {
+        identifier: id,
+        label: label
+    }
+}
 
 export interface Node {
     identifier: string;
     label: string;
     position: Position;
 
-    inputs: Sockets;
-    outputs: Sockets;
+    inputs: Socket[];
+    outputs: Socket[];
 
     jsonData?: any;
     state?: State;

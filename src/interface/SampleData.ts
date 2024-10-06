@@ -1,5 +1,5 @@
 import { Position } from "rete-react-plugin";
-import { Node, Graph, State } from "./NodeInterface";
+import { Node, Graph, State, socket } from "./NodeInterface";
 
 function SampleOutputNode(id: string, position: Position, jsonData?: any): Node {
     return {
@@ -7,12 +7,12 @@ function SampleOutputNode(id: string, position: Position, jsonData?: any): Node 
         label: "Output Node",
         position: position,
 
-        inputs:{},
-        outputs:{
-            "a": "a",
-            "b": "b",
-            "c": "c",
-        },
+        inputs:[],
+        outputs:[
+            socket("a", "a"),
+            socket("b", "b"),
+            socket("c", "c")
+        ],
 
         jsonData: jsonData,
     }
@@ -24,12 +24,12 @@ function SampleInputNode(id: string, position: Position, jsonData?: any): Node {
         label: "Input Node",
         position: position,
 
-        inputs:{
-            "a": "a",
-            "b": "b",
-            "c": "c",
-        },
-        outputs:{},
+        inputs:[
+            socket("a", "a"),
+            socket("b", "b"),
+            socket("c", "c")
+        ],
+        outputs:[],
 
         jsonData: jsonData,
     }
@@ -41,14 +41,14 @@ function SampleIntermediateNode(id: string, position: Position, jsonData?: any):
         label: "Intermediate Node",
         position: position,
 
-        inputs:{
-            "in1": "in1",
-            "in2": "in2",
-        },
-        outputs:{
-            "out1": "out1",
-            "out2": "out2",
-        },
+        inputs:[
+            socket("in1", "in1"),
+            socket("in2", "in2"),
+        ],
+        outputs:[
+            socket("out1", "out1"),
+            socket("out2", "out2"),
+        ],
 
         jsonData: jsonData,
     }

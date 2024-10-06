@@ -23,14 +23,12 @@ async function AddNode(nodeData: Node, nodes: Map<string, NodeView>, editor: Nod
     if (nodeData.state)
         node.state = nodeData.state;
 
-    for (const id in nodeData.inputs) {
-        const value = nodeData.inputs[id];
-        node.addInput(id, new ClassicPreset.Input(socket, value));
+    for (const nodeSocket of nodeData.inputs) {
+        node.addInput(nodeSocket.identifier, new ClassicPreset.Input(socket, nodeSocket.label));
     }
 
-    for (const id in nodeData.outputs) {
-        const value = nodeData.outputs[id];
-        node.addOutput(id, new ClassicPreset.Output(socket, value));
+    for (const nodeSocket of nodeData.outputs) {
+        node.addOutput(nodeSocket.identifier, new ClassicPreset.Output(socket, nodeSocket.label));
     }
         
     await editor.addNode(node);
