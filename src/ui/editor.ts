@@ -75,17 +75,18 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
 
   editor.use(readonly.root);
   editor.use(area);
-  area.use(comment);
 
 
   area.use(readonly.area);
   area.use(connection);
   area.use(render);
+  area.use(comment);
 
   AreaExtensions.simpleNodesOrder(area);
 
 
-  addCustomBackground(area);
+  // TODO is overriding comments
+  // addCustomBackground(area);
   
   await FillEditor(graph, editor, area, comment);
 

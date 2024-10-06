@@ -45,6 +45,8 @@ export interface Connection {
 
 export interface Comment {
     identifier: string;
+    position: Position;
+    
     label: string;
     ids: string[];
 }

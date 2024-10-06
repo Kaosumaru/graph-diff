@@ -3,10 +3,11 @@ import { NodeEditor, ClassicPreset } from "rete";
 import { Comment, Connection, Graph, Node } from "./NodeInterface";
 import { AreaExtra, NodeView, ConnectionView, Schemes } from "./ReteTypes";
 import { AreaPlugin } from "rete-area-plugin";
-import { CommentPlugin, CommentExtensions } from "rete-comment-plugin";
+import { CommentPlugin, CommentExtensions, FrameComment } from "rete-comment-plugin";
 
 const socket = new ClassicPreset.Socket("socket");
 
+const scale = 2.0;
 
 export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>, comments: CommentPlugin<Schemes, AreaExtra>) {
     const nodes = new Map<string, NodeView>();
@@ -18,7 +19,7 @@ export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area
 
     if (graph.comments) {
         for(const comment of graph.comments) 
-            AddedComment(comment, nodes, comments);
+            AddedComment(comment, editor, area, nodes, comments);
     }
 }
 
@@ -38,7 +39,10 @@ async function AddNode(nodeData: Node, nodes: Map<string, NodeView>, editor: Nod
     }
         
     await editor.addNode(node);
-    await area.translate(node.id, nodeData.position);
+    await area.translate(node.id, {
+        x: nodeData.position.x * scale,
+        y: nodeData.position.y * scale
+    });
 
     if (nodes.has(nodeData.identifier))
         throw Error(`Node with duplicate id ${nodeData.identifier}`);
@@ -63,6 +67,14 @@ async function AddConnection(connection: Connection, nodes: Map<string, NodeView
     await editor.addConnection(connectionView);
 }
 
-async function AddedComment(comment: Comment, nodes: Map<string, NodeView>, comments: CommentPlugin<Schemes, AreaExtra>) {
-    comments.addFrame(comment.label, comment.ids.map(id => nodes.get(id)?.id ?? `NotFound-${id}`));
+async function AddedComment(comment: Comment, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>, nodes: Map<string, NodeView>, comments: CommentPlugin<Schemes, AreaExtra>) {
+    const nodeIds = comment.ids.map(id => nodes.get(id)?.id ?? `NotFound-${id}`);
+
+
+    const frameComment = new FrameComment(comment.label, area, editor, {
+        translate: ({ id }, dx, dy, sources) => void comments.emit({ type: 'commenttranslated', data: { id, dx, dy, sources } })
+      });
+    frameComment.linkTo(nodeIds);
+    comments.add(frameComment);
+    comments.translate(frameComment.id, comment.position.x * scale, comment.position.y * scale);
 }

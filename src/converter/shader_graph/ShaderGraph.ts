@@ -87,6 +87,10 @@ function contextToComment(label: string, context: Context): model.Comment {
     return {
         identifier: "internal: " + label,
         label: label,
-        ids: context.m_Blocks.map(block => block.m_Id)
+        ids: context.m_Blocks.map(block => block.m_Id),
+        position: {
+            x: context.m_Position.x,
+            y: context.m_Position.y
+        }
     }
 }
