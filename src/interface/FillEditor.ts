@@ -69,8 +69,6 @@ async function AddConnection(connection: Connection, nodes: Map<string, NodeView
 
 async function AddedComment(comment: Comment, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>, nodes: Map<string, NodeView>, comments: CommentPlugin<Schemes, AreaExtra>) {
     const nodeIds = comment.ids.map(id => nodes.get(id)?.id ?? `NotFound-${id}`);
-
-
     const frameComment = new FrameComment(comment.label, area, editor, {
         translate: ({ id }, dx, dy, sources) => void comments.emit({ type: 'commenttranslated', data: { id, dx, dy, sources } })
       });
