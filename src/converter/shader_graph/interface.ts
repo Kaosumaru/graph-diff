@@ -64,6 +64,8 @@ export interface Node extends GraphEntry {
     m_PreviewExpanded: boolean
     m_DismissedVersion: number
     m_PreviewMode: number
+
+    m_Value?: any;
     // m_CustomColors: MCustomColors ??
 }
 

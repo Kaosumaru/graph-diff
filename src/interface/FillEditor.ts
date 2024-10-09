@@ -9,7 +9,7 @@ const socket = new ClassicPreset.Socket("socket");
 
 const scale = 2.0;
 
-export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>, comments: CommentPlugin<Schemes, AreaExtra>) {
+export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>) {
     const nodes = new Map<string, NodeView>();
     for(const node of graph.nodes) 
         await AddNode(node, nodes, editor, area);
@@ -17,10 +17,12 @@ export async function FillEditor(graph: Graph, editor: NodeEditor<Schemes>, area
     for(const connection of graph.connections) 
         await AddConnection(connection, nodes, editor);
 
+    /*
     if (graph.comments) {
         for(const comment of graph.comments) 
             AddedComment(comment, editor, area, nodes, comments);
     }
+        */
 }
 
 async function AddNode(nodeData: Node, nodes: Map<string, NodeView>, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>) {
@@ -67,6 +69,7 @@ async function AddConnection(connection: Connection, nodes: Map<string, NodeView
     await editor.addConnection(connectionView);
 }
 
+/*
 async function AddedComment(comment: Comment, editor: NodeEditor<Schemes>, area: AreaPlugin<Schemes, AreaExtra>, nodes: Map<string, NodeView>, comments: CommentPlugin<Schemes, AreaExtra>) {
     const nodeIds = comment.ids.map(id => nodes.get(id)?.id ?? `NotFound-${id}`);
     const frameComment = new FrameComment(comment.label, area, editor, {
@@ -76,3 +79,4 @@ async function AddedComment(comment: Comment, editor: NodeEditor<Schemes>, area:
     comments.add(frameComment);
     comments.translate(frameComment.id, comment.position.x * scale, comment.position.y * scale);
 }
+*/

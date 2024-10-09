@@ -27,7 +27,7 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   const connection = new ConnectionPlugin<Schemes, AreaExtra>();
   const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
   const readonly = new ReadonlyPlugin<Schemes>();
-  const comment = new CommentPlugin<Schemes, AreaExtra>();
+  //const comment = new CommentPlugin<Schemes, AreaExtra>();
 
   AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
     accumulating: AreaExtensions.accumulateOnCtrl(),
@@ -80,15 +80,15 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   area.use(readonly.area);
   area.use(connection);
   area.use(render);
-  area.use(comment);
+  //area.use(comment);
 
   AreaExtensions.simpleNodesOrder(area);
 
 
   // TODO is overriding comments
-  // addCustomBackground(area);
+  addCustomBackground(area);
   
-  await FillEditor(graph, editor, area, comment);
+  await FillEditor(graph, editor, area);
 
   setTimeout(() => {
     // wait until nodes rendered because they dont have predefined width and height
