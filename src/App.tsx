@@ -1,6 +1,7 @@
 import './App.css';
 import { convertShaderGraph } from './converter/shader_graph/ShaderGraph';
 import { testData } from './data/testdata';
+import { testData2 } from './data/testdata2';
 import { SampleGraph, SampleGraph2 } from './interface/SampleData';
 import { DiffGraph } from './logic/DiffGraph';
 import { ComparisionComponent } from './ui/ComparisionComponent';
@@ -12,12 +13,14 @@ const graph2 = SampleGraph2();
 const diff = DiffGraph(graph1, graph2);
 */
 
-const graph = convertShaderGraph(testData);
+const graph1 = convertShaderGraph(testData);
+const graph2 = convertShaderGraph(testData2);
+const diff = DiffGraph(graph1, graph2);
 
 function App() {
   return (
     <div className="App">
-      <ComparisionComponent diffGraph={graph}/>    
+      <ComparisionComponent diffGraph={diff}/>    
     </div>
   );
 }
