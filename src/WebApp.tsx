@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './App.css';
 import { convertShaderGraph } from './converter/shader_graph/ShaderGraph';
 import { testData } from './data/testdata';
@@ -17,12 +18,14 @@ const graph1 = convertShaderGraph(testData);
 const graph2 = convertShaderGraph(testData2);
 const diff = DiffGraph(graph1, graph2);
 
-function App() {
+function WebApp() {
+
   return (
     <div className="App">
+      <div>Webpage</div>
       <ComparisionComponent diffGraph={diff}/>    
     </div>
   );
 }
 
-export default App;
+export default WebApp;

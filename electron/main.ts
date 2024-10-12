@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
@@ -7,9 +7,16 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      // contextIsolation: false,
+//      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     }
+  })
+
+  ipcMain.on('set-title', (event, title) => {
+    const webContents = event.sender;
+    const win = BrowserWindow.fromWebContents(webContents);
+    if (win)
+      win.setTitle(title)
   })
 
   if (app.isPackaged) {
