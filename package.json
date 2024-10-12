@@ -24,6 +24,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "deep-equal": "^2.2.3",
+    "react-json-view-compare": "^2.0.2",
     "rete": "^2.0.5",
     "rete-area-plugin": "^2.1.1",
     "rete-comment-plugin": "^2.0.2",
@@ -31,7 +32,7 @@
     "rete-react-plugin": "^2.0.7",
     "rete-readonly-plugin": "^2.0.2",
     "rete-render-utils": "^2.0.3",
-    "react-json-view-compare": "^2.0.2"
+    "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",

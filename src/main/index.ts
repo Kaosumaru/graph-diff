@@ -3,18 +3,41 @@ import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { readFile } from 'node:fs/promises';
+import { parse } from 'ts-command-line-args';
+
+interface IArguments {
+  basePath?: string;
+  newPath?: string;
+  'remote-debugging-port'?: number;
+}
+
+export const args = parse<IArguments>({
+  basePath: { type: String, optional: true },
+  newPath: { type: String, optional: true },
+  'remote-debugging-port': { type: Number, optional: true }
+});
 
 async function getBaseFile(): Promise<string> {
-  const debugPath = join(__dirname, '../../test_data/Base.shadergraph');
-  const data = await readFile(debugPath, {
+  let path = args.basePath;
+  if (process.env.NODE_ENV && !path) {
+    path = join(__dirname, '../../test_data/Base.shadergraph');
+  }
+
+  if (!path) return '';
+  const data = await readFile(path, {
     encoding: 'utf8'
   });
   return data;
 }
 
 async function getNewFile(): Promise<string> {
-  const debugPath = join(__dirname, '../../test_data/v2.shadergraph');
-  const data = await readFile(debugPath, {
+  let path = args.newPath;
+  if (process.env.NODE_ENV && !path) {
+    path = join(__dirname, '../../test_data/v2.shadergraph');
+  }
+
+  if (!path) return '';
+  const data = await readFile(path, {
     encoding: 'utf8'
   });
   return data;
