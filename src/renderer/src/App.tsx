@@ -1,9 +1,9 @@
 //import './App.css';
-import { convertShaderGraph } from './converter/shader_graph/ShaderGraph'
-import { testData } from './data/testdata'
-import { testData2 } from './data/testdata2'
-import { DiffGraph } from './logic/DiffGraph'
-import { ComparisionComponent } from './ui/ComparisionComponent'
+import { convertShaderGraph } from './converter/shader_graph/ShaderGraph';
+import { testData } from './data/testdata';
+import { testData2 } from './data/testdata2';
+import { DiffGraph } from './logic/DiffGraph';
+import { ComparisionComponent } from './ui/ComparisionComponent';
 
 const graph1 = convertShaderGraph(testData);
 const graph2 = convertShaderGraph(testData2);
@@ -17,4 +17,4 @@ function App(): JSX.Element {
   );
 }
 
-export default App
+export default App;

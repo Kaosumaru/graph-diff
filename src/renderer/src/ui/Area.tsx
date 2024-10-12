@@ -6,4 +6,4 @@ export const Area = styled.div`
   border: 2px solid #464646;
   background: #fbfbfb;
   color: white;
-`
+`;

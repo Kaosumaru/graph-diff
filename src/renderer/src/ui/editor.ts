@@ -1,27 +1,27 @@
-import { createRoot } from "react-dom/client";
-import { NodeEditor } from "rete";
-import { AreaPlugin, AreaExtensions } from "rete-area-plugin";
-import {
-  ConnectionPlugin,
-  Presets as ConnectionPresets,
-} from "rete-connection-plugin";
-import { ReactPlugin, Presets } from "rete-react-plugin";
-import { AreaExtra, NodeView, Schemes } from "../interface/ReteTypes";
-import { FillEditor } from "../interface/FillEditor";
-import { StandardNode } from "./Node/StandardNode";
-import { Graph, State } from "../interface/NodeInterface";
-import { AddedNode } from "./Node/AddedNode";
-import { RemovedNode } from "./Node/RemovedNode";
-import { AddedConnectionComponent } from "./Connection/AddedConnection";
-import { RemovedConnectionComponent } from "./Connection/RemovedConnection";
-import { ReadonlyPlugin } from "rete-readonly-plugin";
-import { addCustomBackground } from "./Background/Background";
-import { ModifiedNode } from "./Node/ModifiedNode";
-import { CommentPlugin, CommentExtensions } from "rete-comment-plugin";
+import { createRoot } from 'react-dom/client';
+import { NodeEditor } from 'rete';
+import { AreaPlugin, AreaExtensions } from 'rete-area-plugin';
+import { ConnectionPlugin, Presets as ConnectionPresets } from 'rete-connection-plugin';
+import { ReactPlugin, Presets } from 'rete-react-plugin';
+import { AreaExtra, NodeView, Schemes } from '../interface/ReteTypes';
+import { FillEditor } from '../interface/FillEditor';
+import { StandardNode } from './Node/StandardNode';
+import { Graph, State } from '../interface/NodeInterface';
+import { AddedNode } from './Node/AddedNode';
+import { RemovedNode } from './Node/RemovedNode';
+import { AddedConnectionComponent } from './Connection/AddedConnection';
+import { RemovedConnectionComponent } from './Connection/RemovedConnection';
+import { ReadonlyPlugin } from 'rete-readonly-plugin';
+import { addCustomBackground } from './Background/Background';
+import { ModifiedNode } from './Node/ModifiedNode';
+import { CommentPlugin, CommentExtensions } from 'rete-comment-plugin';
 
-type NodeCallback = (node?: NodeView) => void;
-export async function createEditor(container: HTMLElement, graph: Graph, onNodePicked: NodeCallback): Promise<{ destroy():void}> {
-
+type NodeCallback = (node?: NodeView) => void
+export async function createEditor(
+  container: HTMLElement,
+  graph: Graph,
+  onNodePicked: NodeCallback
+): Promise<{ destroy(): void }> {
   const editor = new NodeEditor<Schemes>();
   const area = new AreaPlugin<Schemes, AreaExtra>(container);
   const connection = new ConnectionPlugin<Schemes, AreaExtra>();
@@ -30,10 +30,10 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   //const comment = new CommentPlugin<Schemes, AreaExtra>();
 
   AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
-    accumulating: AreaExtensions.accumulateOnCtrl(),
+    accumulating: AreaExtensions.accumulateOnCtrl()
   });
 
-  area.addPipe(context => {
+  area.addPipe((context) => {
     if (context.type === 'nodepicked') {
       const node = editor.getNode(context.data.id);
       onNodePicked(node);
@@ -45,7 +45,7 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
     Presets.classic.setup({
       customize: {
         node(context) {
-          switch(context.payload.state) {
+          switch (context.payload.state) {
             case State.Added:
               return AddedNode;
             case State.Removed:
@@ -59,7 +59,7 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
           return Presets.classic.Socket;
         },
         connection(context) {
-          switch(context.payload.state) {
+          switch (context.payload.state) {
             case State.Added:
               return AddedConnectionComponent;
             case State.Removed:
@@ -76,7 +76,6 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
   editor.use(readonly.root);
   editor.use(area);
 
-
   area.use(readonly.area);
   area.use(connection);
   area.use(render);
@@ -84,22 +83,17 @@ export async function createEditor(container: HTMLElement, graph: Graph, onNodeP
 
   AreaExtensions.simpleNodesOrder(area);
 
-
   // TODO is overriding comments
   addCustomBackground(area);
-  
+
   await FillEditor(graph, editor, area);
 
   setTimeout(() => {
     // wait until nodes rendered because they dont have predefined width and height
     AreaExtensions.zoomAt(area, editor.getNodes());
     //readonly.enable();
-
   }, 10);
   return {
-    destroy: () => area.destroy(),
+    destroy: () => area.destroy()
   };
-
 }
-
-
