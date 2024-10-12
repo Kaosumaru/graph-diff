@@ -90,6 +90,7 @@ export function convertShaderGraph(graph: string): model.Graph {
   const textEntries = graph.split('\n\n');
 
   for (const entry of textEntries) {
+    if (!entry) continue;
     const graphEntry = JSON.parse(entry) as GraphEntry;
     entries.set(graphEntry.m_ObjectId, graphEntry);
 

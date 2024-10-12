@@ -2,6 +2,23 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
+import { readFile } from 'node:fs/promises';
+
+async function getBaseFile(): Promise<string> {
+  const debugPath = join(__dirname, '../../test_data/Base.shadergraph');
+  const data = await readFile(debugPath, {
+    encoding: 'utf8'
+  });
+  return data;
+}
+
+async function getNewFile(): Promise<string> {
+  const debugPath = join(__dirname, '../../test_data/v2.shadergraph');
+  const data = await readFile(debugPath, {
+    encoding: 'utf8'
+  });
+  return data;
+}
 
 function createWindow(): void {
   // Create the browser window.
@@ -51,6 +68,8 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'));
+  ipcMain.handle('file:getBaseFile', getBaseFile);
+  ipcMain.handle('file:getNewFile', getNewFile);
 
   createWindow();
 

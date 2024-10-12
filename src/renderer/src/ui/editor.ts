@@ -14,9 +14,9 @@ import { RemovedConnectionComponent } from './Connection/RemovedConnection';
 import { ReadonlyPlugin } from 'rete-readonly-plugin';
 import { addCustomBackground } from './Background/Background';
 import { ModifiedNode } from './Node/ModifiedNode';
-import { CommentPlugin, CommentExtensions } from 'rete-comment-plugin';
 
-type NodeCallback = (node?: NodeView) => void
+type NodeCallback = (node?: NodeView) => void;
+
 export async function createEditor(
   container: HTMLElement,
   graph: Graph,
@@ -38,7 +38,7 @@ export async function createEditor(
       const node = editor.getNode(context.data.id);
       onNodePicked(node);
     }
-    return context
+    return context;
   });
 
   render.addPreset(
@@ -55,7 +55,8 @@ export async function createEditor(
           }
           return StandardNode;
         },
-        socket(context) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        socket(_context) {
           return Presets.classic.Socket;
         },
         connection(context) {
