@@ -4,6 +4,11 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { readFile } from 'node:fs/promises';
 import { parse } from 'ts-command-line-args';
+import log from 'electron-log/main';
+
+log.initialize();
+
+log.info(`args: ${JSON.stringify(process.argv)}`);
 
 interface IArguments {
   basePath?: string;
@@ -23,6 +28,8 @@ async function getBaseFile(): Promise<string> {
     path = join(__dirname, '../../test_data/Base.shadergraph');
   }
 
+  log.info(`getBaseFile: ${path}`);
+
   if (!path) return '';
   const data = await readFile(path, {
     encoding: 'utf8'
@@ -35,6 +42,7 @@ async function getNewFile(): Promise<string> {
   if (process.env.NODE_ENV && !path) {
     path = join(__dirname, '../../test_data/v2.shadergraph');
   }
+  log.info(`getNewFile: ${path}`);
 
   if (!path) return '';
   const data = await readFile(path, {

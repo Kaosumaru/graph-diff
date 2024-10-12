@@ -87,7 +87,7 @@ export function convertShaderGraph(graph: string): model.Graph {
     };
   }
 
-  const textEntries = graph.split('\n\n');
+  const textEntries = graph.replace(/[\r]/g, '').split('\n\n');
 
   for (const entry of textEntries) {
     if (!entry) continue;
