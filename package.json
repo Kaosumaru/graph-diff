@@ -1,30 +1,29 @@
 {
   "name": "node-diff",
-  "version": "0.1.0",
-  "author": "Mateusz Borycki",
-  "description": "Node Diff",
-  "homepage": ".",
-  "private": true,
+  "version": "1.0.0",
+  "description": "An Electron application with React and TypeScript",
+  "main": "./out/main/index.js",
+  "author": "example.com",
+  "homepage": "https://electron-vite.org",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "postinstall": "electron-builder install-app-deps",
+    "build:unpack": "npm run build && electron-builder --dir",
+    "build:win": "npm run build && electron-builder --win",
+    "build:mac": "electron-vite build && electron-builder --mac",
+    "build:linux": "electron-vite build && electron-builder --linux"
+  },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/electron-devtools-installer": "^2.2.2",
-    "@types/jest": "^29.4.0",
-    "@types/node": "^18.13.0",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "@vitejs/plugin-react-swc": "^3.7.1",
-    "add": "^2.0.6",
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/utils": "^3.0.0",
     "deep-equal": "^2.2.3",
-    "electron-devtools-installer": "^3.2.0",
-    "electron-reload": "^1.5.0",
-    "react": "^18.2.0",
-    "react-compare-slider": "^3.1.0",
-    "react-dom": "^18.2.0",
-    "react-json-view-compare": "^2.0.2",
-    "react-router": "^6.27.0",
-    "react-router-dom": "^6.27.0",
     "rete": "^2.0.5",
     "rete-area-plugin": "^2.1.1",
     "rete-comment-plugin": "^2.0.2",
@@ -32,55 +31,25 @@
     "rete-react-plugin": "^2.0.7",
     "rete-readonly-plugin": "^2.0.2",
     "rete-render-utils": "^2.0.3",
-    "styled-components": "^6.1.13",
-    "typescript": "^4.9.5",
-    "vite": "^5.4.8",
-    "vite-plugin-svgr": "^4.2.0",
-    "vite-tsconfig-paths": "^5.0.1",
-    "web-vitals": "^3.1.1"
-  },
-  "scripts": {
-    "start": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview",
-    "electron:dev": "concurrently \"cross-env BROWSER=none yarn run start\" \"wait-on http://127.0.0.1:5173 && tsc -p electron -w\" \"wait-on http://127.0.0.1:5173 && tsc -p electron && electron .\"",
-    "electron:build": "yarn run build && tsc -p electron && electron-builder",
-    "electron": "electron ."
-  },
-  "main": "build/electron/main.js",
-  "build": {
-    "extends": null,
-    "files": [
-      "build/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react-json-view-compare": "^2.0.2"
   },
   "devDependencies": {
-    "@types/deep-equal": "^1.0.4",
-    "concurrently": "^7.6.0",
-    "cross-env": "^7.0.3",
-    "electron": "^23.3.13",
-    "electron-builder": "^23.6.0",
-    "wait-on": "^7.0.1"
+    "@electron-toolkit/eslint-config-prettier": "^2.0.0",
+    "@electron-toolkit/eslint-config-ts": "^2.0.0",
+    "@electron-toolkit/tsconfig": "^1.0.1",
+    "@types/node": "^20.14.8",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "electron": "^31.0.2",
+    "electron-builder": "^24.13.3",
+    "electron-vite": "^2.3.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.3",
+    "prettier": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.1"
   }
 }
