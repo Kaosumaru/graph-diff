@@ -16,7 +16,7 @@ TODO
 ### Sourcetree
 
 Go to external diff options and configure
-1. Diff command `<path>\node-diff.exe`
+1. Diff command `<path>\graph-diff.exe`
 2. Arguments `-- --basePath=\"$LOCAL\" --newPath=\"$REMOTE\"`
 
 
@@ -54,10 +54,14 @@ $ npm run build:linux
 
 ### TODO
 
+v 0.0.1
 - add instructions for git
 - check file extension
 - handle errors
 - show values of slots in unity graph
+
+later
 - create autopublish scripts
 - parse more complex unity graphs
 - add support for Amplify graphs
+- add possibility to publish it as a react webpage integrated with code review
