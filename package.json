@@ -1,10 +1,10 @@
 {
   "name": "graph-diff",
   "version": "0.0.1",
-  "description": "An Electron application with React and TypeScript",
+  "description": "A tool to diff graphs",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "Mateus Borycki",
+  "homepage": "https://github.com/Kaosumaru/graph-diff",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --fix",
