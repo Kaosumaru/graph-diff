@@ -62,14 +62,10 @@ $ npm run build:linux
 
 ### TODO
 
-v 0.0.1
-
-- show values of slots in unity graph
-
-later
-
+- fix ui issues
 - optionally add to PATH variable
 - create autopublish scripts
 - parse more complex unity graphs
 - add support for Amplify graphs
 - add possibility to publish it as a react webpage integrated with code review
+- show before vs after view
