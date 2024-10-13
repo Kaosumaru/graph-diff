@@ -5,6 +5,9 @@ import icon from '../../resources/icon.png?asset';
 import { readFile } from 'node:fs/promises';
 import { parse } from 'ts-command-line-args';
 import log from 'electron-log/main';
+import { Graph } from '../diff/interface/NodeInterface';
+import { DiffGraph } from '../diff/logic/DiffGraph';
+import { convertShaderGraph } from '../diff/converter/shader_graph/ShaderGraph';
 
 log.initialize();
 
@@ -30,7 +33,7 @@ async function getBaseFile(): Promise<string> {
 
   log.info(`getBaseFile: ${path}`);
 
-  if (!path) return '';
+  if (!path) throw new Error('basePath param is not set');
   const data = await readFile(path, {
     encoding: 'utf8'
   });
@@ -44,11 +47,17 @@ async function getNewFile(): Promise<string> {
   }
   log.info(`getNewFile: ${path}`);
 
-  if (!path) return '';
+  if (!path) throw new Error('newPath param is not set');
   const data = await readFile(path, {
     encoding: 'utf8'
   });
   return data;
+}
+
+async function getDiff(): Promise<Graph> {
+  const graph1 = convertShaderGraph(await getBaseFile());
+  const graph2 = convertShaderGraph(await getNewFile());
+  return DiffGraph(graph1, graph2);
 }
 
 function createWindow(): void {
@@ -99,8 +108,7 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'));
-  ipcMain.handle('file:getBaseFile', getBaseFile);
-  ipcMain.handle('file:getNewFile', getNewFile);
+  ipcMain.handle('file:getDiff', getDiff);
 
   createWindow();
 

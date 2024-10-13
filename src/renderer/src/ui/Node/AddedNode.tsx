@@ -1,6 +1,6 @@
 import { Presets } from 'rete-react-plugin';
 import { css } from 'styled-components';
-import { State } from '../../interface/NodeInterface';
+import { State } from '../../../../diff/interface/NodeInterface';
 
 const styles = css<{ state?: State }>`
   background: #2cf6b3cc;

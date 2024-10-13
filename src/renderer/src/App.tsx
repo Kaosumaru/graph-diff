@@ -1,21 +1,33 @@
 //import './App.css';
 import { useEffect, useState } from 'react';
-import { convertShaderGraph } from './converter/shader_graph/ShaderGraph';
-import { DiffGraph } from './logic/DiffGraph';
 import { ComparisionComponent } from './ui/ComparisionComponent';
-import { Graph } from './interface/NodeInterface';
+import { Graph } from '../../diff/interface/NodeInterface';
 
 function App(): JSX.Element {
   const [graph, setGraph] = useState<Graph>({ connections: [], nodes: [] });
+  const [error, setError] = useState('');
+
   useEffect(() => {
     const fetchData = async function (): Promise<void> {
-      const graph1 = convertShaderGraph(await window.api.getBaseFile());
-      const graph2 = convertShaderGraph(await window.api.getNewFile());
-      const diff = DiffGraph(graph1, graph2);
-      setGraph(diff);
+      try {
+        const diff = await window.api.getDiff();
+        setGraph(diff);
+        setError('');
+      } catch (error) {
+        if (error instanceof Error) setError(error.message);
+      }
     };
     fetchData().catch(console.error);
   }, []);
+
+  if (error) {
+    return (
+      <div className="App">
+        <div>Error ${error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <ComparisionComponent diffGraph={graph} />

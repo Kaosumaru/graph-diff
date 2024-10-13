@@ -1,10 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
+import { Graph } from '../diff/interface/NodeInterface';
 
 // Custom APIs for renderer
 export const api = {
-  getBaseFile: (): Promise<string> => ipcRenderer.invoke('file:getBaseFile'),
-  getNewFile: (): Promise<string> => ipcRenderer.invoke('file:getNewFile')
+  getDiff: (): Promise<Graph> => ipcRenderer.invoke('file:getDiff')
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
