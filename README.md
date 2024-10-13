@@ -64,8 +64,6 @@ $ npm run build:linux
 
 v 0.0.1
 
-- check file extension
-- handle errors
 - show values of slots in unity graph
 
 later
