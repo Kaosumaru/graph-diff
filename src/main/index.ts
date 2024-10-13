@@ -1,5 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
-import { join } from 'path';
+import { extname, join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { readFile } from 'node:fs/promises';
@@ -7,7 +7,7 @@ import { parse } from 'ts-command-line-args';
 import log from 'electron-log/main';
 import { Graph } from '../diff/interface/NodeInterface';
 import { DiffGraph } from '../diff/logic/DiffGraph';
-import { convertShaderGraph } from '../diff/converter/shader_graph/ShaderGraph';
+import { convertGraph } from '../diff/converter/converter';
 
 log.initialize();
 
@@ -25,7 +25,7 @@ export const args = parse<IArguments>({
     'remote-debugging-port': { type: Number, optional: true }
 });
 
-async function getBaseFile(): Promise<string> {
+async function getBaseFile(): Promise<[string, string]> {
     let path = args.basePath;
     if (process.env.NODE_ENV && !path) {
         path = join(__dirname, '../../test_data/Base.shadergraph');
@@ -37,26 +37,31 @@ async function getBaseFile(): Promise<string> {
     const data = await readFile(path, {
         encoding: 'utf8'
     });
-    return data;
+    return [data, extname(path)];
 }
 
-async function getNewFile(): Promise<string> {
+async function getNewFile(): Promise<[string, string]> {
     let path = args.newPath;
     if (process.env.NODE_ENV && !path) {
         path = join(__dirname, '../../test_data/v2.shadergraph');
     }
+
     log.info(`getNewFile: ${path}`);
 
     if (!path) throw new Error('newPath param is not set');
     const data = await readFile(path, {
         encoding: 'utf8'
     });
-    return data;
+    return [data, extname(path)];
 }
 
 async function getDiff(): Promise<Graph> {
-    const graph1 = convertShaderGraph(await getBaseFile());
-    const graph2 = convertShaderGraph(await getNewFile());
+    const [data1, ext1] = await getBaseFile();
+    const [data2, ext2] = await getNewFile();
+
+    const graph1 = convertGraph(data1, ext1);
+    const graph2 = convertGraph(data2, ext2);
+
     return DiffGraph(graph1, graph2);
 }
 
@@ -66,6 +71,7 @@ function createWindow(): void {
         width: 900,
         height: 670,
         show: false,
+        title: args.basePath,
         autoHideMenuBar: true,
         ...(process.platform === 'linux' ? { icon } : {}),
         webPreferences: {
