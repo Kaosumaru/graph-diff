@@ -19,6 +19,19 @@ export function convertShaderGraph(graph: string): model.Graph {
         return getSlots(node.m_Slots).filter((slot) => slot.m_SlotType == 1);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function getNodeData(node: Node): any {
+        const inputs = getInputs(node);
+        const slots = inputs.reduce((slots, item) => {
+            slots[item.m_DisplayName] = item.m_Value;
+            return slots;
+        }, {});
+        return {
+            value: node.m_Value,
+            slots: slots
+        };
+    }
+
     function nodeToGraphNode(node: Node): model.Node {
         return {
             identifier: node.m_ObjectId,
@@ -28,7 +41,7 @@ export function convertShaderGraph(graph: string): model.Graph {
             inputs: getInputs(node).map(convertToSocket),
             outputs: getOutputs(node).map(convertToSocket),
 
-            jsonData: node.m_Value
+            jsonData: getNodeData(node)
         };
     }
 
@@ -62,6 +75,8 @@ export function convertShaderGraph(graph: string): model.Graph {
     function contextToNode(name: string, context: Context): model.Node {
         let inputs: model.Socket[] = [];
         let outputs: model.Socket[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const jsonData: any = {};
 
         const contextId = name;
 
@@ -75,6 +90,8 @@ export function convertShaderGraph(graph: string): model.Graph {
 
             inputs = inputs.concat(getInputs(node).map(convertToContextSocket));
             outputs = outputs.concat(getOutputs(node).map(convertToContextSocket));
+
+            jsonData[node.m_Name] = getNodeData(node);
         }
 
         return {
@@ -83,7 +100,8 @@ export function convertShaderGraph(graph: string): model.Graph {
             position: context.m_Position,
 
             inputs: inputs,
-            outputs: outputs
+            outputs: outputs,
+            jsonData: jsonData
         };
     }
 
