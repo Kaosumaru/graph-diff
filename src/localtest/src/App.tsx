@@ -1,7 +1,8 @@
 import { ComparisionComponent } from '@components/ComparisionComponent';
-import { SampleGraph } from './sample/SampleData';
+import { simpleAmplify } from './sample/amplify/simple';
+import { convertGraph } from '@diff/converter/converter';
 
-const graph = SampleGraph();
+const graph = convertGraph(simpleAmplify, '.amplify');
 
 function App(): JSX.Element {
     // eslint-disable-next-line prettier/prettier
