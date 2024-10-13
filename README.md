@@ -74,3 +74,4 @@ $ npm run build:linux
 - add possibility to publish it as a react webpage integrated with code review
 - show before vs after view
 - support comments and subgraphs
+- change window title
