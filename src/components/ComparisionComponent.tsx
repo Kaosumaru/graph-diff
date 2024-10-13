@@ -4,7 +4,7 @@ import ReactJsonViewCompare from 'react-json-view-compare';
 import styled from 'styled-components';
 import { Area } from './Area';
 import { useCallback, useState } from 'react';
-import { Graph, State } from '../../../diff/interface/NodeInterface';
+import { Graph, State } from '@diff/interface/NodeInterface';
 
 const Layout = styled.div`
     display: grid;

@@ -1,7 +1,7 @@
 //import './App.css';
 import { useEffect, useState } from 'react';
-import { ComparisionComponent } from './ui/ComparisionComponent';
-import { Graph } from '../../diff/interface/NodeInterface';
+import { ComparisionComponent } from '../../components/ComparisionComponent';
+import { Graph } from '@diff/interface/NodeInterface';
 
 function App(): JSX.Element {
     const [graph, setGraph] = useState<Graph>({ connections: [], nodes: [] });

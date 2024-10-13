@@ -6,16 +6,24 @@
     "src/renderer/src/**/*.tsx",
     "src/preload/*.d.ts", 
     "src/diff/**/*", 
+    "src/components/**/*", 
     "src/localtest/**/*", 
   ],
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*",
-      ]
+      ],
+      "@diff/*": [
+        "src/diff/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
     }
   }
 }

@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -9,6 +10,12 @@ export default defineConfig({
             input: {
                 app: './src/localtest/index.html'
             }
+        }
+    },
+    resolve: {
+        alias: {
+            '@diff': resolve('src/diff'),
+            '@components': resolve('src/components')
         }
     },
     plugins: [react()]

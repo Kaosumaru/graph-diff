@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Position } from 'rete-react-plugin';
-import { Node, Graph, socket } from './NodeInterface';
+import { Node, Graph, socket } from '@diff/interface/NodeInterface';
 
 function SampleOutputNode(id: string, position: Position, jsonData?: any): Node {
     return {

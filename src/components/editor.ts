@@ -3,10 +3,10 @@ import { NodeEditor } from 'rete';
 import { AreaPlugin, AreaExtensions } from 'rete-area-plugin';
 import { ConnectionPlugin, Presets as ConnectionPresets } from 'rete-connection-plugin';
 import { ReactPlugin, Presets } from 'rete-react-plugin';
-import { AreaExtra, NodeView, Schemes } from '../../../diff/interface/ReteTypes';
-import { FillEditor } from '../../../diff/interface/FillEditor';
+import { AreaExtra, NodeView, Schemes } from '@diff/interface/ReteTypes';
+import { FillEditor } from '@diff/interface/FillEditor';
 import { StandardNode } from './Node/StandardNode';
-import { Graph, State } from '../../../diff/interface/NodeInterface';
+import { Graph, State } from '@diff/interface/NodeInterface';
 import { AddedNode } from './Node/AddedNode';
 import { RemovedNode } from './Node/RemovedNode';
 import { AddedConnectionComponent } from './Connection/AddedConnection';
@@ -46,12 +46,12 @@ export async function createEditor(
             customize: {
                 node(context) {
                     switch (context.payload.state) {
-                    case State.Added:
-                        return AddedNode;
-                    case State.Removed:
-                        return RemovedNode;
-                    case State.Changed:
-                        return ModifiedNode;
+                        case State.Added:
+                            return AddedNode;
+                        case State.Removed:
+                            return RemovedNode;
+                        case State.Changed:
+                            return ModifiedNode;
                     }
                     return StandardNode;
                 },
@@ -62,9 +62,9 @@ export async function createEditor(
                 connection(context) {
                     switch (context.payload.state) {
                         case State.Added:
-                        return AddedConnectionComponent;
+                            return AddedConnectionComponent;
                         case State.Removed:
-                        return RemovedConnectionComponent;
+                            return RemovedConnectionComponent;
                     }
                     return Presets.classic.Connection;
                 }
