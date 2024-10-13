@@ -4,6 +4,10 @@ A PoC of diff tool for graphs.
 
 ![Preview](docs/preview.png)
 
+It transforms 2 graphs to an intermediate format, diffs these formats, and show results.
+Green nodes are nodes that were added, red nodes that were removed, and yellow nodes are nodes with same id but with a different property.
+Properties of node are converted to a JSON, and diff of selected node is shown on the right.
+
 Currently supported file types:
 
 - .shadergraph - Unity Shader Graph (it's only partially supported, I tested it on simple graphs only)
