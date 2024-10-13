@@ -25,6 +25,14 @@
       "presentation": {
         "hidden": true
       }
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug in Chrome",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src/",
+      
     }
   ],
   "compounds": [
