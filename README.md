@@ -5,6 +5,7 @@ A PoC of diff tool for graphs.
 ![Preview](docs/preview.png)
 
 Currently supported file types:
+
 - .shadergraph - Unity Shader Graph (it's only partially supported, I tested it on simple graphs only)
 
 ## How to use it
@@ -12,15 +13,18 @@ Currently supported file types:
 ### Git
 
 1. Add following to git `.config`
+
 ```
 [difftool "graphdiff"]
 	cmd = '<path>/graph-diff' -- --basePath=\"$LOCAL\" --newPath=\"$REMOTE\"
 ```
+
 2. `git difftool -y -t graphdiff <file-to-diff>`
 
 ### Sourcetree
 
 Go to external diff options and configure
+
 1. Diff command `<path>/graph-diff`
 2. Arguments `-- --basePath=\"$LOCAL\" --newPath=\"$REMOTE\"`
 3. Right click on a file and select "External Diff"
@@ -56,15 +60,16 @@ $ npm run build:mac
 $ npm run build:linux
 ```
 
-
 ### TODO
 
 v 0.0.1
+
 - check file extension
 - handle errors
 - show values of slots in unity graph
 
 later
+
 - optionally add to PATH variable
 - create autopublish scripts
 - parse more complex unity graphs

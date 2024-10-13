@@ -7,5 +7,5 @@ const styles = css<{ state?: State }>``;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function StandardNode(props: any): JSX.Element {
-  return <Presets.classic.Node styles={() => styles} {...props} />;
+    return <Presets.classic.Node styles={() => styles} {...props} />;
 }

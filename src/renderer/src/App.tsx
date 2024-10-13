@@ -4,35 +4,35 @@ import { ComparisionComponent } from './ui/ComparisionComponent';
 import { Graph } from '../../diff/interface/NodeInterface';
 
 function App(): JSX.Element {
-  const [graph, setGraph] = useState<Graph>({ connections: [], nodes: [] });
-  const [error, setError] = useState('');
+    const [graph, setGraph] = useState<Graph>({ connections: [], nodes: [] });
+    const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchData = async function (): Promise<void> {
-      try {
-        const diff = await window.api.getDiff();
-        setGraph(diff);
-        setError('');
-      } catch (error) {
-        if (error instanceof Error) setError(error.message);
-      }
-    };
-    fetchData().catch(console.error);
-  }, []);
+    useEffect(() => {
+        const fetchData = async function (): Promise<void> {
+            try {
+                const diff = await window.api.getDiff();
+                setGraph(diff);
+                setError('');
+            } catch (error) {
+                if (error instanceof Error) setError(error.message);
+            }
+        };
+        fetchData().catch(console.error);
+    }, []);
 
-  if (error) {
+    if (error) {
+        return (
+            <div className="App">
+                <div>Error ${error}</div>
+            </div>
+        );
+    }
+
     return (
-      <div className="App">
-        <div>Error ${error}</div>
-      </div>
+        <div className="App">
+            <ComparisionComponent diffGraph={graph} />
+        </div>
     );
-  }
-
-  return (
-    <div className="App">
-      <ComparisionComponent diffGraph={graph} />
-    </div>
-  );
 }
 
 export default App;

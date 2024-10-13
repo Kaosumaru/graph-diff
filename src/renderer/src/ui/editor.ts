@@ -18,83 +18,83 @@ import { ModifiedNode } from './Node/ModifiedNode';
 type NodeCallback = (node?: NodeView) => void;
 
 export async function createEditor(
-  container: HTMLElement,
-  graph: Graph,
-  onNodePicked: NodeCallback
+    container: HTMLElement,
+    graph: Graph,
+    onNodePicked: NodeCallback
 ): Promise<{ destroy(): void }> {
-  const editor = new NodeEditor<Schemes>();
-  const area = new AreaPlugin<Schemes, AreaExtra>(container);
-  const connection = new ConnectionPlugin<Schemes, AreaExtra>();
-  const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
-  const readonly = new ReadonlyPlugin<Schemes>();
-  //const comment = new CommentPlugin<Schemes, AreaExtra>();
+    const editor = new NodeEditor<Schemes>();
+    const area = new AreaPlugin<Schemes, AreaExtra>(container);
+    const connection = new ConnectionPlugin<Schemes, AreaExtra>();
+    const render = new ReactPlugin<Schemes, AreaExtra>({ createRoot });
+    const readonly = new ReadonlyPlugin<Schemes>();
+    //const comment = new CommentPlugin<Schemes, AreaExtra>();
 
-  AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
-    accumulating: AreaExtensions.accumulateOnCtrl()
-  });
+    AreaExtensions.selectableNodes(area, AreaExtensions.selector(), {
+        accumulating: AreaExtensions.accumulateOnCtrl()
+    });
 
-  area.addPipe((context) => {
-    if (context.type === 'nodepicked') {
-      const node = editor.getNode(context.data.id);
-      onNodePicked(node);
-    }
-    return context;
-  });
-
-  render.addPreset(
-    Presets.classic.setup({
-      customize: {
-        node(context) {
-          switch (context.payload.state) {
-            case State.Added:
-              return AddedNode;
-            case State.Removed:
-              return RemovedNode;
-            case State.Changed:
-              return ModifiedNode;
-          }
-          return StandardNode;
-        },
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        socket(_context) {
-          return Presets.classic.Socket;
-        },
-        connection(context) {
-          switch (context.payload.state) {
-            case State.Added:
-              return AddedConnectionComponent;
-            case State.Removed:
-              return RemovedConnectionComponent;
-          }
-          return Presets.classic.Connection;
+    area.addPipe((context) => {
+        if (context.type === 'nodepicked') {
+            const node = editor.getNode(context.data.id);
+            onNodePicked(node);
         }
-      }
-    })
-  );
+        return context;
+    });
 
-  connection.addPreset(ConnectionPresets.classic.setup());
+    render.addPreset(
+        Presets.classic.setup({
+            customize: {
+                node(context) {
+                    switch (context.payload.state) {
+                    case State.Added:
+                        return AddedNode;
+                    case State.Removed:
+                        return RemovedNode;
+                    case State.Changed:
+                        return ModifiedNode;
+                    }
+                    return StandardNode;
+                },
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                socket(_context) {
+                    return Presets.classic.Socket;
+                },
+                connection(context) {
+                    switch (context.payload.state) {
+                        case State.Added:
+                        return AddedConnectionComponent;
+                        case State.Removed:
+                        return RemovedConnectionComponent;
+                    }
+                    return Presets.classic.Connection;
+                }
+            }
+        })
+    );
 
-  editor.use(readonly.root);
-  editor.use(area);
+    connection.addPreset(ConnectionPresets.classic.setup());
 
-  area.use(readonly.area);
-  area.use(connection);
-  area.use(render);
-  //area.use(comment);
+    editor.use(readonly.root);
+    editor.use(area);
 
-  AreaExtensions.simpleNodesOrder(area);
+    area.use(readonly.area);
+    area.use(connection);
+    area.use(render);
+    //area.use(comment);
 
-  // TODO is overriding comments
-  addCustomBackground(area);
+    AreaExtensions.simpleNodesOrder(area);
 
-  await FillEditor(graph, editor, area);
+    // TODO is overriding comments
+    addCustomBackground(area);
 
-  setTimeout(() => {
-    // wait until nodes rendered because they dont have predefined width and height
-    AreaExtensions.zoomAt(area, editor.getNodes());
-    //readonly.enable();
-  }, 10);
-  return {
-    destroy: () => area.destroy()
-  };
+    await FillEditor(graph, editor, area);
+
+    setTimeout(() => {
+        // wait until nodes rendered because they dont have predefined width and height
+        AreaExtensions.zoomAt(area, editor.getNodes());
+        //readonly.enable();
+    }, 10);
+    return {
+        destroy: () => area.destroy()
+    };
 }
