@@ -20,6 +20,7 @@ export function convertAmplify(graph: string): model.Graph {
     const versionLine = (lines.shift() ?? '0').split('=');
     const version = Number(versionLine[versionLine.length - 1]);
     if (version == 0) throw new Error('Invalid version!');
+    if (version <= 2502) throw new Error('Unsupported version!');
 
     const entries = lines.map((line) => line.split(';'));
 
@@ -27,7 +28,9 @@ export function convertAmplify(graph: string): model.Graph {
 }
 
 function convertAmplifyLines(lines: string[][], version: number): model.Graph {
-    const nodes = lines.filter((line) => line[0] === nodeTag).map((line) => convertAmplifyNode(line, version));
+    const nodes = lines
+        .filter((line) => line[0] === nodeTag)
+        .map((line) => convertAmplifyNode(line, version));
     const connections = lines.filter((line) => line[0] === connectionTag).map(convertAmplifyWire);
 
     addMissingSocketsToNodes(nodes, connections);

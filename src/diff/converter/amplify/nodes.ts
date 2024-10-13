@@ -172,26 +172,32 @@ class StandardSurfaceOutputNode extends MasterNode {
     }
 
     zBuffer(): void {
-        //m_zWriteMode.WriteToString( ref nodeInfo );
-        this.inlineProperty('zBuffer.zWriteMode');
+        if (NodeDecorator.version > 14501) {
+            //m_zWriteMode.WriteToString( ref nodeInfo );
+            this.inlineProperty('zBuffer.zWriteMode');
 
-        //m_zTestMode.WriteToString( ref nodeInfo );
-        this.inlineProperty('zBuffer.zTestMode');
+            //m_zTestMode.WriteToString( ref nodeInfo );
+            this.inlineProperty('zBuffer.zTestMode');
+        }
 
         //IOUtils.AddFieldValueToString( ref nodeInfo, m_offsetEnabled );
         this.member('zBuffer.offsetEnabled');
 
-        //m_offsetFactor.WriteToString( ref nodeInfo );
-        this.inlineProperty('zBuffer.offsetFactor');
+        if (NodeDecorator.version > 15303) {
+            //m_offsetFactor.WriteToString( ref nodeInfo );
+            this.inlineProperty('zBuffer.offsetFactor');
 
-        //m_offsetUnits.WriteToString( ref nodeInfo );
-        this.inlineProperty('zBuffer.offsetUnits');
+            //m_offsetUnits.WriteToString( ref nodeInfo );
+            this.inlineProperty('zBuffer.offsetUnits');
+        }
 
-        //IOUtils.AddFieldValueToString( ref nodeInfo, m_extraDepthPass );
-        this.member('zBuffer.extraDepthPass');
+        if (NodeDecorator.version > 14202) {
+            //IOUtils.AddFieldValueToString( ref nodeInfo, m_extraDepthPass );
+            this.member('zBuffer.extraDepthPass');
 
-        //IOUtils.AddFieldValueToString( ref nodeInfo, m_extrazTestMode );
-        this.member('zBuffer.extrazTestMode');
+            //IOUtils.AddFieldValueToString( ref nodeInfo, m_extrazTestMode );
+            this.member('zBuffer.extrazTestMode');
+        }
     }
 
     inlineProperty(path: string): void {
