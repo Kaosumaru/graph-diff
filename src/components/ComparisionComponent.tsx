@@ -16,13 +16,14 @@ const Layout = styled.div`
     gap: 0.6em;
     padding: 0.6em;
     box-sizing: border-box;
-    overflow: hidden;
+    height: 100vh;
 `;
 
 const Result = styled(Area)`
+    user-select: auto;
     grid-area: result;
     position: relative;
-    overflow-y: scroll;
+    overflow-y: auto;
 `;
 
 const Canvas = styled(Area)`
