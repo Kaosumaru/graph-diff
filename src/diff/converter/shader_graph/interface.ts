@@ -10,11 +10,14 @@ export type SlotType =
 
 export type NodeType = 'UnityEditor.ShaderGraph.BlockNode' | 'UnityEditor.ShaderGraph.Vector4Node';
 
+export type CommentType = 'UnityEditor.ShaderGraph.StickyNoteData';
+
 export type Type =
     | 'UnityEditor.ShaderGraph.GraphData'
     | 'UnityEditor.ShaderGraph.CategoryData'
     | 'UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget'
     | 'UnityEditor.Rendering.Universal.ShaderGraph.UniversalLitSubTarget'
+    | CommentType
     | SlotType
     | NodeType;
 
@@ -50,6 +53,12 @@ export interface CategoryData extends GraphEntry {
     m_Type: 'UnityEditor.ShaderGraph.CategoryData';
     m_Name: string;
     m_ChildObjectList: Id[]; // maybe
+}
+
+export interface Comment extends GraphEntry {
+    m_Type: CommentType;
+    m_Position: Position;
+    m_Content: string;
 }
 
 export interface Node extends GraphEntry {

@@ -1,10 +1,21 @@
-import { Context, Edge, GraphData, GraphEntry, Id, Node, Slot, SlotRef } from './interface';
+import {
+    Comment,
+    Context,
+    Edge,
+    GraphData,
+    GraphEntry,
+    Id,
+    Node,
+    Slot,
+    SlotRef
+} from './interface';
 import * as model from '../../interface/NodeInterface';
 
 export function convertShaderGraph(graph: string): model.Graph {
     const entries = new Map<string, GraphEntry>();
     const contextBlocks = new Map<string, string>();
     const nodes = new Array<Node>();
+    const comments = new Array<Comment>();
     let graphData: GraphData | null = null;
 
     function getSlots(ids: Id[]): Slot[] {
@@ -42,6 +53,17 @@ export function convertShaderGraph(graph: string): model.Graph {
             outputs: getOutputs(node).map(convertToSocket),
 
             jsonData: getNodeData(node)
+        };
+    }
+
+    function commentToGraphNode(comment: Comment): model.Node {
+        return {
+            identifier: comment.m_ObjectId,
+            label: comment.m_Content,
+            position: comment.m_Position,
+
+            inputs: [],
+            outputs: []
         };
     }
 
@@ -121,6 +143,12 @@ export function convertShaderGraph(graph: string): model.Graph {
             const node = graphEntry as unknown as Node;
             nodes.push(node);
         }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((graphEntry as any).m_Content) {
+            const comment = graphEntry as unknown as Comment;
+            comments.push(comment);
+        }
     }
 
     if (!graphData) throw new Error('Graph data not found');
@@ -134,6 +162,8 @@ export function convertShaderGraph(graph: string): model.Graph {
             .filter((node) => !contextBlocks.has(node.m_ObjectId))
             .map((node) => nodeToGraphNode(node))
     );
+
+    modelNodes = modelNodes.concat(comments.map((comment) => commentToGraphNode(comment)));
 
     return {
         connections: getEdges(graphData),
