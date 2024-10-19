@@ -66,9 +66,7 @@ $ npm run build:linux
 
 ### TODO
 
-- fix ui issues
 - optionally add to PATH variable
-- create autopublish scripts
 - parse more complex unity graphs
 - add support for Amplify graphs
 - add possibility to publish it as a react webpage integrated with code review
