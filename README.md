@@ -66,10 +66,10 @@ $ npm run build:linux
 
 ### TODO
 
+- better ui (different colors, dark mode)
 - optionally add to PATH variable
 - parse more complex unity graphs
 - add support for Amplify graphs
 - add possibility to publish it as a react webpage integrated with code review
 - show before vs after view
-- support comments and subgraphs
-- change window title
+- support groups and subgraphs

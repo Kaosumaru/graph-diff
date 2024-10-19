@@ -28,7 +28,7 @@ export const args = parse<IArguments>({
 async function getBaseFile(): Promise<[string, string]> {
     let path = args.basePath;
     if (process.env.NODE_ENV && !path) {
-        path = join(__dirname, '../../test_data/Base.shadergraph');
+        path = 'D:\\Unity\\Test Shader\\Assets\\Samples\\Shader Graph\\14.0.11\\Production Ready Shaders\\Lit\\HDRPLit.shadergraph';
     }
 
     log.info(`getBaseFile: ${path}`);
@@ -43,7 +43,7 @@ async function getBaseFile(): Promise<[string, string]> {
 async function getNewFile(): Promise<[string, string]> {
     let path = args.newPath;
     if (process.env.NODE_ENV && !path) {
-        path = join(__dirname, '../../test_data/v2.shadergraph');
+        path = 'D:\\Unity\\Test Shader\\Assets\\Samples\\Shader Graph\\14.0.11\\Production Ready Shaders\\Lit\\HDRPLit.shadergraph';
     }
 
     log.info(`getNewFile: ${path}`);
@@ -71,7 +71,7 @@ function createWindow(): void {
         width: 900,
         height: 670,
         show: false,
-        title: args.basePath,
+        title: args.newPath ? `Graph Diff (${args.newPath})` : 'Graph Diff',
         autoHideMenuBar: true,
         ...(process.platform === 'linux' ? { icon } : {}),
         webPreferences: {
