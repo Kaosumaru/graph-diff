@@ -10,10 +10,14 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ github.ref }}
 
     steps:
+      - name: Write release version
+        run: |
+          VERSION=${GITHUB_REF_NAME#refs/heads/v}
+          echo Version: $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -23,7 +27,7 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 
-      - name: install wine
+      - name: install Wine
         run: |
           sudo dpkg --add-architecture i386
           wget -qO - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
